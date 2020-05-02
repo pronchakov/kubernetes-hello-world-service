@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-hello-world-service-deployment
+  labels:
+    app: hello-world-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-world-service
+  template:
+    metadata:
+      labels:
+        app: hello-world-service
+    spec:
+      containers:
+        - name: hello-world-service-container
+          image: pronchakov/kubernetes-hello-world-service

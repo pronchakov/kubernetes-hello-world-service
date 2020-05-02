@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: kubernetes-hello-world-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: kubernetes-hello-world-service-host
+      http:
+        paths:
+          - backend:
+              serviceName: kubernetes-hello-world-service-service
+              servicePort: 80

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <bean id="greeter" class="edu.openshift.helloworld.Greeting"/>
+    <bean id="hostnameProvider" class="edu.openshift.helloworld.HostnameProvider"/>
+
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <rest>
+            <get uri="/hello/{name}" produces="text/plain">
+                <to uri="direct:greet-route"/>
+            </get>
+        </rest>
+        <route>
+            <from uri="direct:greet-route"/>
+            <transform>
+                <simple>${bean:greeter.hello(${headers.name})}</simple>
+            </transform>
+            <transform>
+                <simple>${bean:hostnameProvider.addHostname(${body})}</simple>
+            </transform>
+        </route>
+    </camelContext>
+
+</beans>
